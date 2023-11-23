@@ -1,0 +1,23 @@
+{
+    "icon": {
+        "type": "emoji",
+            "emoji": "🐟"
+    },
+    "title": [
+        {
+            "type": "text",
+            "text": {
+                "content": "Top Contributors",
+                "link": null
+            }
+        }
+    ],
+    "properties": {
+        "Name": {
+            "title": {}
+        },
+        "Commits": {
+            "number": {}
+        }
+    }
+}
