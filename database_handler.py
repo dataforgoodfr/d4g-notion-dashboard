@@ -2,22 +2,53 @@ from errors import KeyNotFoundError, IdNotSpecifiedError
 
 import requests
 import json
+import os
+
 
 class NotionDatabaseHandler(object):
 
-    def __init__(self, notion_token, database_id=None, page_id=None) -> None:
+    def __init__(self, notion_token, database_id=None, page_id=None, template_dir="templates") -> None:
         if database_id is None and page_id is None:
             raise IdNotSpecifiedError
 
         self.notion_token = notion_token
         self.database_id = database_id
         self.page_id = page_id
+        self.template_dir = template_dir
 
         self.headers = {
             "Authorization": "Bearer " + self.notion_token,
             "Content-Type": "application/json",
             "Notion-Version": "2022-06-28",
         }
+
+    def create_database(self):
+        assert self.page_id is not None
+        with open(os.path.join(self.template_dir, "top_contributors.json")) as jf:
+            config = json.load(jf)
+        config.update({
+            "parent": {
+                "type": "page_id",
+                "page_id": self.page_id            }
+        })
+        url = "https://api.notion.com/v1/databases"
+        response = requests.post(url, json=config, headers=self.headers)
+        return response.json()
+    
+    def create_entry(self, database_id, entry: dict):
+        create_url = "https://api.notion.com/v1/pages"
+
+        payload = {"parent": {"database_id": database_id}, "properties": entry}
+
+        res = requests.post(create_url, headers=self.headers, json=payload)
+        return res
+
+    def populate_database(self, database_id: str, records: dict):
+        results = {}
+        for entry in records:
+            res = self.create_entry(database_id, entry)
+            print(res.status_code)
+            results.update(res.json())
 
     def get_pages(self, num_pages=None):
         """
