@@ -9,11 +9,11 @@ DATABASE_ID = os.environ.get("DATABASE_ID")
 PAGE_ID = os.environ.get("PAGE_ID")
 
 handler = NotionDatabaseHandler(notion_token=NOTION_TOKEN, database_id=DATABASE_ID, page_id=PAGE_ID)
-# handler.update_database({
-#     "Commits": 2,
-#     "PRs": 0,
-#     "Contributors": 1
-# })
+handler.update_database({
+    "Commits": 2,
+    "PRs": 0,
+    "Contributors": 1
+})
 result = handler.create_database()
 print(result)
 handler.populate_database(
