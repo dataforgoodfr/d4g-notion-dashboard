@@ -8,6 +8,3 @@
 * get all ids from search API ?
 * Turn this into a github action to sync stats when committing on main or when PRs are open/closed/merged
 * Migrate
-
-## Current Dashboard
-![The Current State of the Dashboard](images/notion_dashboard.png)
