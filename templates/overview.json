@@ -1,22 +1,22 @@
 {
     "icon": {
         "type": "emoji",
-            "emoji": "😎"
+            "emoji": "🔬"
     },
     "title": [
         {
             "type": "text",
             "text": {
-                "content": "Top Contributors",
+                "content": "Overview",
                 "link": null
             }
         }
     ],
     "properties": {
-        "Name": {
+        "Event": {
             "title": {}
         },
-        "Commits": {
+        "Count": {
             "number": {}
         }
     }
