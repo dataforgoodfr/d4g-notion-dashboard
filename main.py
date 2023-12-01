@@ -1,4 +1,5 @@
 from database_handler import NotionDatabaseHandler
+from overview_dashboard import GithubOverviewDashboard
 from dotenv import load_dotenv
 import os
 
@@ -8,16 +9,19 @@ NOTION_TOKEN = os.environ.get("NOTION_TOKEN")
 DATABASE_ID = os.environ.get("DATABASE_ID")
 PAGE_ID = os.environ.get("PAGE_ID")
 
-handler = NotionDatabaseHandler(notion_token=NOTION_TOKEN, database_id=DATABASE_ID, page_id=PAGE_ID)
-handler.update_database({
-    "Commits": 2,
-    "PRs": 0,
-    "Contributors": 1
-})
-result = handler.create_database()
-print(result)
+start_records = [
+    {"Event": {"title": [{"type":"text", "text": {"content": "Contributors"}}]}, "Count": {"number": 0}},
+    {"Event": {"title": [{"type":"text", "text": {"content": "PRs"}}]}, "Count": {"number": 0}},
+    {"Event": {"title": [{"type":"text", "text": {"content": "Commits"}}]}, "Count": {"number": 0}},
+    {"Event": {"title": [{"type":"text", "text": {"content": "Open Issues"}}]}, "Count": {"number": 0}}
+]
+dashboard = GithubOverviewDashboard(NOTION_TOKEN, parent_page_id=PAGE_ID)
+dashboard.create_dashboard(start_records)
+
+handler = NotionDatabaseHandler(NOTION_TOKEN, PAGE_ID)
+result = handler.create_database("top_contributors.json")
 handler.populate_database(
-    database_id=result['id'], 
+    database_id=result['database_id'], 
     records=[
         {"Name": {"title": [{"type":"text", "text": {"content": "gmguarino4"}}]}, "Commits": {"number": 6}},
         {"Name": {"title": [{"type":"text", "text": {"content": "gmguarino3"}}]}, "Commits": {"number": 7}},
