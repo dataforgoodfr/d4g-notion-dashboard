@@ -10,7 +10,7 @@ class NotionDatabaseHandler(object):
     """
     General class to handle the connection to a Notion Database.
     """
-    def __init__(self, notion_token, database_id=None, parent_page_id=None, template_dir="templates") -> None:
+    def __init__(self, notion_token, parent_page_id=None, database_id=None, template_dir="templates") -> None:
         if database_id is None and parent_page_id is None:
             raise IdNotSpecifiedError
 
@@ -68,8 +68,9 @@ class NotionDatabaseHandler(object):
         for entry in records:
             
             res = self.create_entry(database_id, entry)
-            print(res.status_code)
+            print(res.json())
             results.update(res.json())
+            sleep(0.4)
 
     def get_pages(self, num_pages=None):
         """
@@ -109,16 +110,16 @@ class NotionDatabaseHandler(object):
         raise KeyNotFoundError(key=key)
 
 
-    def update_numerical_value(self, page, new_value):
+    def update_numerical_value(self, page, new_value, column_name="Count"):
         "Updates the Numerical value"
-        page["properties"]["Number"]["number"] = new_value
+        page["properties"][column_name]["number"] = new_value
         return page
     
-    def update_title_key(self, page, text):
+    def update_title_key(self, page, text, column_name="Event"):
         """
         Changes the name of the entry key.
         """
-        page["properties"]["Name"]["title"][0]["text"]["content"] = text
+        page["properties"][column_name]["title"][0]["text"]["content"] = text
         return page
 
     def update_page(self, page):
@@ -191,8 +192,12 @@ class NotionDatabaseHandler(object):
         title = config["title"][0]["text"]["content"]
         database_id = self.search_database_by_title(title)['database_id']
         if database_id is None:
-            database_id = self.create_database(json_template=config)["database_id"]
-        return database_id
+            self.database_id = self.create_database(json_template=config)["database_id"]
+            self.populate_database(
+                database_id=self.database_id, 
+                records=records
+            )
+        return self.database_id
 
 
 
