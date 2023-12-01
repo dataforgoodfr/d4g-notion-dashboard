@@ -17,9 +17,9 @@ class GithubOverviewDashboard(NotionDatabaseHandler):
                     {"Event": {"title": [{"type":"text", "text": {"content": "Commits"}}]}, "Commits": {"number": 0}},
                 ]
             )
-            
+
     def update_dashboard(self, commits=0, pr=0, contributors=0):
-        self.update_database({
+        self.update_database_entries({
             "Commits": commits,
             "PRs": pr,
             "Contributors": contributors
