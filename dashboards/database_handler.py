@@ -1,4 +1,4 @@
-from errors import KeyNotFoundError, IdNotSpecifiedError, TemplateNotSpecifiedError
+from .errors import KeyNotFoundError, IdNotSpecifiedError, TemplateNotSpecifiedError
 
 from time import sleep
 import requests
@@ -99,13 +99,14 @@ class NotionDatabaseHandler(object):
         return results
 
 
-    def get_row_by_key(self, pages: list, key: str):
+    def get_row_by_key(self, pages: list, key: str, column_name:str="Event"):
         """
         Gets the entry in the Database searching the specific key.
         There is probably a more efficient way to do this.
         """
         for page in pages:
-            if page["object"] == "page" and page["properties"]["Name"]["title"][0]["text"]["content"] == key:
+            print(page["properties"])
+            if page["object"] == "page" and page["properties"][column_name]["title"][0]["text"]["content"] == key:
                 return page
         raise KeyNotFoundError(key=key)
 
@@ -177,10 +178,9 @@ class NotionDatabaseHandler(object):
             data = response.json()
             results.extend(data["results"])
 
-        
         for result in results:
             if result["parent"]["type"] == "page_id":
-                if result["parent"]["page_id"] == os.environ.get("PAGE_ID"):
+                if result["parent"]["page_id"] == os.environ.get("PAGE_ID") and result["archived"] is False:
                     print(result['id'], result["title"][0]["text"]["content"])
                     return {"database_id": result["id"]}
 
@@ -190,8 +190,8 @@ class NotionDatabaseHandler(object):
         with open(os.path.join(self.template_dir, template_file)) as jf:
             config = json.load(jf)
         title = config["title"][0]["text"]["content"]
-        database_id = self.search_database_by_title(title)['database_id']
-        if database_id is None:
+        self.database_id = self.search_database_by_title(title)['database_id']
+        if self.database_id is None:
             self.database_id = self.create_database(json_template=config)["database_id"]
             self.populate_database(
                 database_id=self.database_id, 

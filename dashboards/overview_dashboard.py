@@ -1,4 +1,4 @@
-from database_handler import NotionDatabaseHandler
+from .database_handler import NotionDatabaseHandler
 
 class GithubOverviewDashboard(NotionDatabaseHandler):
 
@@ -16,5 +16,3 @@ class GithubOverviewDashboard(NotionDatabaseHandler):
             "PRs": pr,
             "Contributors": contributors
         })
-
-    
