@@ -1,5 +1,6 @@
 from dashboards.overview_dashboard import GithubOverviewDashboard
 from dashboards.contributor_dashboard import GithubContributorsDashboard
+from github_repo.github_handler import GithubHandler
 from dotenv import load_dotenv
 import os
 import json
@@ -7,7 +8,14 @@ import json
 load_dotenv("creds.env")
 
 NOTION_TOKEN = os.environ.get("NOTION_TOKEN")
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
 PAGE_ID = os.environ.get("PAGE_ID")
+
+
+repo = GithubHandler(GITHUB_TOKEN, "org4g", "org4g-notion")
+n_commits = repo.get_total_commits()
+n_contributors = repo.get_total_contributors()
+contributor_records = repo.get_top_contributors()
 
 start_records = [
     {"Event": {"title": [{"type":"text", "text": {"content": "Contributors"}}]}, "Count": {"number": 0}},
@@ -16,26 +24,17 @@ start_records = [
     {"Event": {"title": [{"type":"text", "text": {"content": "Open Issues"}}]}, "Count": {"number": 0}}
 ]
 dashboard = GithubOverviewDashboard(NOTION_TOKEN, parent_page_id=PAGE_ID)
+
+# if the dashboard already exists it will just get the database_id for it
 dashboard.create_dashboard(start_records)
-dashboard.update_dashboard(commits=1, pr=1, contributors=1)
+# Updates with new values
+dashboard.update_dashboard(commits=n_commits, pr=0, contributors=n_contributors)
 
 contributor_dashboard = GithubContributorsDashboard(NOTION_TOKEN, PAGE_ID, n_contributors=5)
 
-contributor_records = [
-    {"Name": "gmguarino", "Commits": 10},
-    {"Name": "gmguarino1", "Commits": 9},
-    {"Name": "gmguarino2", "Commits": 8},
-    {"Name": "gmguarino3", "Commits": 7},
-]
+start_contributor_records = []
 
-database_id = contributor_dashboard.create_dashboard(contributor_dashboard.parse_contributors(contributor_records, as_records=True))
-
-contributor_records = [
-    {"Name": "ggg", "Commits": 10},
-    {"Name": "ggg1", "Commits": 9},
-    {"Name": "ggg2", "Commits": 8},
-    {"Name": "ggg3", "Commits": 7},
-]
+database_id = contributor_dashboard.create_dashboard(contributor_dashboard.parse_contributors(start_contributor_records, as_records=True))
 
 print(contributor_dashboard.parse_contributors(contributor_records, as_records=True))
 print(contributor_dashboard.parse_contributors(contributor_records, as_records=False))
