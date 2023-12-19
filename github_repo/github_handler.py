@@ -78,4 +78,12 @@ class GithubHandler(object):
         contributor_records = sorted(contributor_records, key=lambda d: d['Commits'], reverse=True)[:n]
         return contributor_records
 
+    def __get_all_issues(self):
+        request_url=f"https://api.github.com/repos/{self.github_owner}/{self.github_repo}/issues"
+        response = self.__get_request_generic(request_url)
+        return response.json()
+    
+    def get_open_issues(self):
+        issues = self.__get_all_issues()
+        return len(list(filter(lambda issue: issue['state']=="open", issues)))
         

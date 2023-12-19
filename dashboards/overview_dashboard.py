@@ -10,9 +10,10 @@ class GithubOverviewDashboard(NotionDatabaseHandler):
         self.database_id = self.get_or_create_database(self.template_file, records)
         return self.database_id
 
-    def update_dashboard(self, commits=0, pr=0, contributors=0):
+    def update_dashboard(self, commits=0, pr=0, contributors=0, open_issues=0):
         self.update_database_entries({
             "Commits": commits,
             "PRs": pr,
-            "Contributors": contributors
+            "Contributors": contributors,
+            "Open Issues": open_issues
         })
