@@ -86,4 +86,13 @@ class GithubHandler(object):
     def get_open_issues(self):
         issues = self.__get_all_issues()
         return len(list(filter(lambda issue: issue['state']=="open", issues)))
+    
+    def __get_all_pull_requests(self):
+        request_url=f"https://api.github.com/repos/{self.github_owner}/{self.github_repo}/pulls"
+        response = self.__get_request_generic(request_url)
+        return response.json()
+    
+    def get_open_pull_requests(self):
+        pulls = self.__get_all_pull_requests()
+        return len(list(filter(lambda pull: pull['state']=="open", pulls)))
         

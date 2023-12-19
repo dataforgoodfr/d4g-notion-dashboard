@@ -17,6 +17,7 @@ n_commits = repo.get_total_commits()
 n_contributors = repo.get_total_contributors()
 contributor_records = repo.get_top_contributors()
 open_issues = repo.get_open_issues()
+open_prs = repo.get_open_pull_requests()
 
 start_records = [
     {"Event": {"title": [{"type":"text", "text": {"content": "Contributors"}}]}, "Count": {"number": 0}},
@@ -29,7 +30,7 @@ dashboard = GithubOverviewDashboard(NOTION_TOKEN, parent_page_id=PAGE_ID)
 # if the dashboard already exists it will just get the database_id for it
 dashboard.create_dashboard(start_records)
 # Updates with new values
-dashboard.update_dashboard(commits=n_commits, pr=0, contributors=n_contributors, open_issues=open_issues)
+dashboard.update_dashboard(commits=n_commits, pr=open_prs, contributors=n_contributors, open_issues=open_issues)
 
 contributor_dashboard = GithubContributorsDashboard(NOTION_TOKEN, PAGE_ID, n_contributors=5)
 
