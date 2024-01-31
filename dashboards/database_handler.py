@@ -1,4 +1,4 @@
-from .errors import KeyNotFoundError, IdNotSpecifiedError, TemplateNotSpecifiedError
+from .errors import KeyNotFoundError, IdNotSpecifiedError, TemplateNotSpecifiedError, RequestNotSuccessfulError
 
 from time import sleep
 import requests
@@ -171,6 +171,8 @@ class NotionDatabaseHandler(object):
 
         response = requests.post(search_url, headers=self.headers, json=payload)
         data = response.json()
+        if "results" not in data:
+            RequestNotSuccessfulError(data)
         results = data["results"]
         while data["has_more"]:
             payload = {"page_size": 100, "start_cursor": data["next_cursor"]}

@@ -10,6 +10,18 @@ class KeyNotFoundError(Exception):
         super().__init__(message)
 
 
+class RequestNotSuccessfulError(Exception):
+    """Exception raised if results are not present in notion POST API call.
+
+    Attributes:
+        data -- the returned data
+    """
+
+    def __init__(self, data):
+        message = f"The API call was not successful. Expected 'results' in json body got: \n{data}"
+        super().__init__(message)
+
+
 class IdNotSpecifiedError(Exception):
     """Exception raised for not specifying either page id or the database id.
     """
