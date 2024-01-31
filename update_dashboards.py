@@ -8,8 +8,10 @@ import json
 import argparse
 
 
-NOTION_TOKEN = os.environ.get("NOTION_TOKEN")
+NOTION_TOKEN = os.environ.get("NOTION_DASHBOARD_TOKEN")
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
+
+print(os.environ)
 
 def get_config(path):
     with open(path) as jf:
