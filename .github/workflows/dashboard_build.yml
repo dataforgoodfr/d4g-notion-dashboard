@@ -22,6 +22,9 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
+    - name: Install Requirements
+      run: |
+        pip install -r requirements.txt
     - name: Update Dashboards
       env: 
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
