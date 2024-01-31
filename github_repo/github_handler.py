@@ -26,6 +26,7 @@ class GithubGenericError(Exception):
     """
 
     def __init__(self, response):
+        print(response.json())
         message = f"Generic error was returned with status code: {response.status_code}."
         super().__init__(message)     
 
@@ -70,12 +71,11 @@ class GithubHandler(object):
         response = self.__get_request_generic(request_url)
         return len(response.json())
     
-    def get_top_contributors(self, n=10):
+    def get_top_contributors(self):
         request_url=f"https://api.github.com/repos/{self.github_owner}/{self.github_repo}/stats/contributors"
         response = self.__get_request_generic(request_url)
         data = response.json()
         contributor_records = list(map(lambda d: {"Name": d["author"]["login"], "Commits": d["total"]}, data))
-        contributor_records = sorted(contributor_records, key=lambda d: d['Commits'], reverse=True)[:n]
         return contributor_records
 
     def __get_all_issues(self):
