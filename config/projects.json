@@ -1,8 +1,9 @@
 {
     "season_12": [],
-    "test": [
-        {"github_url": "https://github.com/org4g/org4g-notion.git", "notion_page_id": "36d93546-a196-4773-8c00-27b4111e0419"},
-        {"github_url": "https://github.com/org4g/org4g-notion.git", "notion_page_id": "8dc6c9c7-6bc6-4132-af01-6a1b3709609e"}
-    ],
-    "offseason":[]
+    "test": [],
+    "offseason":[
+        {"github_org": "dataforgoodfr", "github_repo": "Bloom", "notion_page_id": "6402dd0a4a104694a5d095a896234b18"},
+        {"github_org": "dataforgoodfr", "github_repo": "CarbonBombs", "notion_page_id": "4ea70a69962b42ea87b98164dc242756"},
+        {"github_org": "dataforgoodfr", "github_repo": "CarbonBombsApp", "notion_page_id": "99a0233d2d444ba69a37f3936e13d471"}
+    ]
 }
