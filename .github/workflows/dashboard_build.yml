@@ -1,0 +1,30 @@
+name: Build & Deploy to Scaleway
+
+on:
+  push:
+      # Sequence of patterns matched against refs/heads
+    branches:    
+      - main
+
+  # to be able to force deploy    
+  workflow_dispatch:
+
+
+env:
+  PYTHON_VERSION: '3.10'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      name: Checkout
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - name: Update Dashboards
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      run: |
+        python .github/python/update_dashboards.py --config config/projects.json
