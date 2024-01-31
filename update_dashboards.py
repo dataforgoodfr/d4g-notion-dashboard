@@ -8,8 +8,8 @@ import json
 import argparse
 
 
-NOTION_TOKEN = os.environ.get("NOTION_DASHBOARD_TOKEN")
-GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
+# NOTION_TOKEN = os.environ.get("NOTION_DASHBOARD_TOKEN")
+# GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
 
 print(os.environ)
 
@@ -19,7 +19,7 @@ def get_config(path):
     return config
 
 
-def initialize_overview_dashboard(parent_page_id):
+def initialize_overview_dashboard(args, parent_page_id):
     start_records = [
         {"Event": {"title": [{"type":"text", "text": {"content": "Contributors"}}]}, "Count": {"number": 0}},
         {"Event": {"title": [{"type":"text", "text": {"content": "PRs"}}]}, "Count": {"number": 0}},
@@ -27,7 +27,8 @@ def initialize_overview_dashboard(parent_page_id):
         {"Event": {"title": [{"type":"text", "text": {"content": "Open Issues"}}]}, "Count": {"number": 0}}
     ]
     
-    dashboard = GithubOverviewDashboard(NOTION_TOKEN, parent_page_id=parent_page_id)
+    dashboard = GithubOverviewDashboard(args.notion_token, parent_page_id=parent_page_id)
+    # dashboard = GithubOverviewDashboard(NOTION_TOKEN, parent_page_id=parent_page_id)
     # if the dashboard already exists it will just get the database_id for it
     dashboard.create_dashboard(start_records)
     return dashboard
@@ -43,9 +44,9 @@ def update_overview_dashboard(repo, dashboard):
     dashboard.update_dashboard(commits=n_commits, pr=open_prs, contributors=n_contributors, open_issues=open_issues)
 
 
-def initialize_contributor_dashboard(parent_page_id):
+def initialize_contributor_dashboard(args, parent_page_id):
     start_records = []
-    dashboard = GithubContributorsDashboard(NOTION_TOKEN, parent_page_id, n_contributors=5)
+    dashboard = GithubContributorsDashboard(args.notion_token, parent_page_id, n_contributors=5)
     # if the dashboard already exists it will just get the database_id for it
     dashboard.create_dashboard(dashboard.parse_contributors(start_records, as_records=True))
     return dashboard
@@ -60,18 +61,23 @@ def update_contributor_dashboard(repo, dashboard):
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str)
+    parser.add_argument("--notion-token", type=str)
+    parser.add_argument("--github-token", type=str)
+
     args = parser.parse_args()
+    print("Got following args:")
+    print(args)
 
     config = get_config(args.config)
 
     for project_group in config:
         for project in config[project_group]:
             print(project)
-            repo = GithubHandler(GITHUB_TOKEN, project["github_org"], project["github_repo"])
-            overview_dashboard = initialize_overview_dashboard(project["notion_page_id"])
+            repo = GithubHandler(args.github_token, project["github_org"], project["github_repo"])
+            overview_dashboard = initialize_overview_dashboard(args, project["notion_page_id"])
             update_overview_dashboard(repo, overview_dashboard)
 
-            contributor_dashboard = initialize_contributor_dashboard(project["notion_page_id"])
+            contributor_dashboard = initialize_contributor_dashboard(args, project["notion_page_id"])
             update_contributor_dashboard(repo, contributor_dashboard)
 
 

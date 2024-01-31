@@ -26,8 +26,11 @@ jobs:
       run: |
         pip install -r requirements.txt
     - name: Update Dashboards
-      env: 
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NOTION_TOKEN: ${{ secrets.NOTION_DASHBOARD_TOKEN  }}
+      # env: 
+      #   GITHUB_TOKEN: {{ secrets.GITHUB_TOKEN }}
+      #   NOTION_TOKEN: {{ secrets.NOTION_DASHBOARD_TOKEN  }}
       run: |
-        python update_dashboards.py --config config/projects.json
+        python update_dashboards.py \
+          --config config/projects.json \
+          --notion-token ${{ secrets.NOTION_DASHBOARD_TOKEN  }} \
+          --github-token ${{ secrets.GITHUB_TOKEN }}

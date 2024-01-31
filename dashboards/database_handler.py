@@ -203,32 +203,32 @@ class NotionDatabaseHandler(object):
 
 
 
-if __name__=="__main__":
-    # Testing the search API
-    from dotenv import load_dotenv
+# if __name__=="__main__":
+#     # Testing the search API
+#     from dotenv import load_dotenv
 
-    load_dotenv("creds.env")
+#     load_dotenv("creds.env")
 
-    NOTION_TOKEN = os.environ.get("NOTION_TOKEN")
-    headers = {
-        "Authorization": "Bearer " + NOTION_TOKEN,
-        "Content-Type": "application/json",
-        "Notion-Version": "2022-06-28",
-    }
-    data = {
-        "query":"Repository Activity",
-        "filter": {
-            "value": "database",
-            "property": "object"
-        },
-        "sort":{
-            "direction":"ascending",
-            "timestamp":"last_edited_time"
-        }
-    }
+#     NOTION_TOKEN = os.environ.get("NOTION_TOKEN")
+#     headers = {
+#         "Authorization": "Bearer " + NOTION_TOKEN,
+#         "Content-Type": "application/json",
+#         "Notion-Version": "2022-06-28",
+#     }
+#     data = {
+#         "query":"Repository Activity",
+#         "filter": {
+#             "value": "database",
+#             "property": "object"
+#         },
+#         "sort":{
+#             "direction":"ascending",
+#             "timestamp":"last_edited_time"
+#         }
+#     }
 
-    response = requests.post("https://api.notion.com/v1/search", headers=headers, json=data)
-    for result in response.json()['results']:
-        if result["parent"]["type"] == "page_id":
-            if result["parent"]["page_id"] == os.environ.get("PAGE_ID"):
-                print(result['id'], result["title"][0]["text"]["content"])
+#     response = requests.post("https://api.notion.com/v1/search", headers=headers, json=data)
+#     for result in response.json()['results']:
+#         if result["parent"]["type"] == "page_id":
+#             if result["parent"]["page_id"] == os.environ.get("PAGE_ID"):
+#                 print(result['id'], result["title"][0]["text"]["content"])
