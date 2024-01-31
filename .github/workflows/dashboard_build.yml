@@ -28,6 +28,6 @@ jobs:
     - name: Update Dashboards
       env: 
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        NOTION_TOKEN: ${{ secrets.NOTION_DASHBOARD_TOKEN  }}
       run: |
         python update_dashboards.py --config config/projects.json
