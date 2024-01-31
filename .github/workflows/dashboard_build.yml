@@ -1,4 +1,4 @@
-name: Build & Deploy to Scaleway
+name: Update Notion Projects
 
 on:
   push:
@@ -27,4 +27,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       run: |
-        python .github/python/update_dashboards.py --config config/projects.json
+        python update_dashboards.py --config config/projects.json
