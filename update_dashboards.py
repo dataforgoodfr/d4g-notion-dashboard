@@ -113,6 +113,9 @@ if __name__=="__main__":
         
         update_overview_dashboard(repo_stats, overview_dashboard)
         update_contributor_dashboard(contributor_stats, contributor_dashboard)
+        print("Updated dashboard for project group: ", project_group)
+        print("Updated stats for repo: ", repo_stats)
+        print("Updated stats for contributors: ", contributor_stats)
 
 
 
