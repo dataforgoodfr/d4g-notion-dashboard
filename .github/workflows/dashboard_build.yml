@@ -5,8 +5,12 @@ on:
       # Sequence of patterns matched against refs/heads
     branches:    
       - main
-
-  # to be able to force deploy    
+    
+  schedule: # Run every day at 8am
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 8 * * *'
+    
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 
