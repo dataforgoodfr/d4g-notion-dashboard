@@ -1,9 +1,16 @@
 {
-    "offseason": {
-        "notion_page_id": "73dfe37b0bbd4ff1915147eb55a0bcac",
+    "Season 12": {
+        "notion_page_id": "8ffb1213678b40ae8af927cc72e8633f",
         "repos": [
-            {"github_org": "dataforgoodfr", "github_repo": "Bloom"},
-            {"github_org": "dataforgoodfr", "github_repo": "CarbonBombs"}
+            {"github_org": "dataforgoodfr", "github_repo": "12_pinkbombs"},
+            {"github_org": "dataforgoodfr", "github_repo": "12_bloom"},
+            {"github_org": "dataforgoodfr", "github_repo": "12_genai_impact"},
+            {"github_org": "dataforgoodfr", "github_repo": "12_genai_impact_methodo"},
+            {"github_org": "dataforgoodfr", "github_repo": "12_350org"},
+            {"github_org": "dataforgoodfr", "github_repo": "12_taxobservatory"},
+            {"github_org": "dataforgoodfr", "github_repo": "12_zero_dechet_sauvage"},
+            {"github_org": "dataforgoodfr", "github_repo": "12_cartographie_campements"},
+            {"github_org": "dataforgoodfr", "github_repo": "12_observatoire_des_imaginaires"}
         ]
     }
 }
