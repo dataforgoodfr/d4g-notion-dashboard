@@ -179,10 +179,9 @@ class NotionDatabaseHandler(object):
             response = requests.post(search_url, json=payload, headers=self.headers)
             data = response.json()
             results.extend(data["results"])
-
         for result in results:
             if result["parent"]["type"] == "page_id":
-                if result["parent"]["page_id"] == os.environ.get("PAGE_ID") and result["archived"] is False:
+                if result["parent"]["page_id"].replace("-", "") == self.parent_page_id and result["archived"] is False:
                     print(result['id'], result["title"][0]["text"]["content"])
                     return {"database_id": result["id"]}
 
